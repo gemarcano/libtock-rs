@@ -18,6 +18,7 @@ use crate::simple_ble::BleAdvertisingDriverFactory;
 use crate::simple_ble::BleScanningDriverFactory;
 use crate::temperature::TemperatureDriverFactory;
 use crate::timer::DriverContext;
+use crate::perf::Perf;
 use core::cell::Cell;
 
 /// Struct containing all drivers constructible through [retrieve_drivers()]
@@ -41,6 +42,7 @@ pub struct Drivers {
     pub temperature_sensor: TemperatureSensor,
     pub humidity_sensor: HumiditySensor,
     pub ninedof: NinedofDriver,
+    pub perf: Perf,
 }
 
 /// Retrieve [Drivers] struct. Returns struct only once.
@@ -89,6 +91,7 @@ const DRIVERS: Drivers = Drivers {
     temperature_sensor: TemperatureSensor,
     humidity_sensor: HumiditySensor,
     ninedof: NinedofDriver,
+    perf: Perf,
 };
 
 pub struct DriversAlreadyTakenError;
