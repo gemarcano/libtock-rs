@@ -83,6 +83,16 @@ pub fn command(
     }
 }
 
+pub fn command2(
+    driver_number: usize,
+    command_number: usize,
+    arg1: usize,
+    arg2: usize,
+) -> Result<usize, CommandError> {
+    let return_code = unsafe { raw::command(driver_number, command_number, arg1, arg2) };
+    Ok(return_code as usize)
+}
+
 /// [command1_insecure()] is a variant of [command()] that only sets the first
 /// argument in the system call interface. It has the benefit of generating
 /// simpler assembly than [command()], but it leaves the second argument's register
