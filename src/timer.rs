@@ -39,7 +39,7 @@ impl<CB: FnMut(ClockValue, Alarm)> Consumer<WithCallback<'_, CB>> for TimerEvent
     fn consume(data: &mut WithCallback<CB>, clock_value: usize, alarm_id: usize, _: usize) {
         (data.callback)(
             ClockValue {
-                num_ticks: clock_value as isize,
+                num_ticks: clock_value as usize,
                 clock_frequency: data.clock_frequency,
             },
             Alarm { alarm_id },
@@ -95,8 +95,8 @@ impl<'a> Timer<'a> {
 
     pub fn get_current_clock(&self) -> TockResult<ClockValue> {
         Ok(ClockValue {
-            num_ticks: syscalls::command(DRIVER_NUMBER, command_nr::GET_CLOCK_VALUE, 0, 0)?
-                as isize,
+            num_ticks: syscalls::command2(DRIVER_NUMBER, command_nr::GET_CLOCK_VALUE, 0, 0)?
+                as usize,
             clock_frequency: self.clock_frequency,
         })
     }
@@ -149,20 +149,20 @@ impl ClockFrequency {
 
 #[derive(Copy, Clone, Debug)]
 pub struct ClockValue {
-    num_ticks: isize,
+    num_ticks: usize,
     clock_frequency: ClockFrequency,
 }
 
 impl ClockValue {
-    pub fn num_ticks(self) -> isize {
+    pub fn num_ticks(self) -> usize {
         self.num_ticks
     }
 
-    pub fn ms(self) -> isize {
-        if self.num_ticks.abs() < isize::MAX / 1000 {
-            (1000 * self.num_ticks) / self.clock_frequency.hz() as isize
+    pub fn ms(self) -> usize {
+        if self.num_ticks < usize::MAX / 1000 {
+            (1000 * self.num_ticks) / self.clock_frequency.hz() as usize
         } else {
-            1000 * (self.num_ticks / self.clock_frequency.hz() as isize)
+            1000 * (self.num_ticks / self.clock_frequency.hz() as usize)
         }
     }
 
@@ -235,7 +235,7 @@ where
 }
 
 impl Timestamp<isize> {
-    pub fn from_clock_value(value: ClockValue) -> Timestamp<isize> {
+    pub fn from_clock_value(value: ClockValue) -> Timestamp<usize> {
         Timestamp { ms: value.ms() }
     }
 }
@@ -492,7 +492,7 @@ impl<'a> ParallelSleepDriver<'a> {
 }
 
 fn get_current_ticks() -> TockResult<usize> {
-    syscalls::command(DRIVER_NUMBER, command_nr::GET_CLOCK_VALUE, 0, 0).map_err(|err| err.into())
+    syscalls::command2(DRIVER_NUMBER, command_nr::GET_CLOCK_VALUE, 0, 0).map_err(|err| err.into())
 }
 fn set_alarm_at(instant: usize) -> TockResult<()> {
     syscalls::command(DRIVER_NUMBER, command_nr::SET_ALARM, instant, 0)
