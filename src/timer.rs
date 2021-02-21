@@ -134,7 +134,6 @@ impl<'a> Timer<'a> {
 
         Ok(Alarm { alarm_id })
     }
-
 }
 
 #[derive(Copy, Clone, Debug)]
