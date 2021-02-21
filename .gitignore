@@ -1,3 +1,9 @@
 /Cargo.lock
 /platform
 /target
+bundle.tab
+combined.tbf
+metadata.toml
+objdump.log
+rv32imc.bin
+rv32imc.tbf
