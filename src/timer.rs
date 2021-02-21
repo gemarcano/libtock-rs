@@ -135,9 +135,6 @@ impl<'a> Timer<'a> {
         Ok(Alarm { alarm_id })
     }
 
-    pub fn cycles(&self) -> TockResult<usize> {
-        Ok(syscalls::command2(DRIVER_NUMBER, 7, 0, 0)? as usize)
-    }
 }
 
 #[derive(Copy, Clone, Debug)]
