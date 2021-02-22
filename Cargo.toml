@@ -67,6 +67,18 @@ name = "simple_ble"
 path = "examples-features/simple_ble.rs"
 required-features = ["alloc"]
 
+[[example]]
+name = "demo"
+path = "examples/profiling/rust/demo.rs"
+
+[[example]]
+name = "setbrk"
+path = "examples/profiling/rust/setbrkTest.rs"
+
+[[example]]
+name = "time_overhead"
+path = "examples/profiling/rust/time_overhead.rs"
+
 [profile.dev]
 panic = "abort"
 lto = true

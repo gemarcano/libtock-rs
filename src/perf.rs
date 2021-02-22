@@ -6,6 +6,7 @@ const DRIVER_NUMBER: usize = 0x90004;
 mod command_nr {
     pub const COUNT: usize = 0;
     pub const CYCLES: usize = 1;
+    pub const INSTRUCTIONS: usize = 2;
 }
 
 pub struct Perf;
@@ -17,5 +18,9 @@ impl Perf {
 
     pub fn cycles(&self) -> TockResult<usize> {
         Ok(command2(DRIVER_NUMBER, command_nr::CYCLES, 0, 0)?)
+    }
+
+    pub fn instructions(&self) -> TockResult<usize> {
+        Ok(command2(DRIVER_NUMBER, command_nr::INSTRUCTIONS, 0, 0)?)
     }
 }
