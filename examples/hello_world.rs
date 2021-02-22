@@ -3,7 +3,6 @@
 //  (e.g. `screen`, `minicom`) to view the message.
 
 #![no_std]
-#![feature(asm)]
 
 use libtock::println;
 use libtock::result::TockResult;
@@ -16,12 +15,7 @@ async fn main() -> TockResult<()> {
 
     drivers.console.create_console();
 
-    let num : u32;
-    unsafe{
-        asm!("RDCYCLE {}", out(reg) num);
-      }
-
-    println!("Hello Tock World {}", num);
+    println!("Hello Tock World");
 
     Ok(())
 }
